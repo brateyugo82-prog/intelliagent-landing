@@ -106,9 +106,12 @@ und erstellt automatisch Reports, Diagramme und KPIs.
 
 export default function AgentPage({ params }) {
   const { slug } = params;
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+
   const agent = agents[slug];
 
-  // Fallback: Agent nicht gefunden
+  // Wenn Agent nicht existiert → direkt statischer Fallback (kein conditional Hook!)
   if (!agent) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-gray-900 text-gray-300">
@@ -116,9 +119,6 @@ export default function AgentPage({ params }) {
       </main>
     );
   }
-
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
 
   const handleDemo = (e) => {
     e.preventDefault();
