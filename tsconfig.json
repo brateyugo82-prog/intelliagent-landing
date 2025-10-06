@@ -18,10 +18,20 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",          // WICHTIG: Basis ist Projektroot
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],        // für alles
+      "@/components/*": ["./app/components/*"], // gezielt für Components
+      "@/app/*": ["./app/*"] // optional, falls du app/* direkt willst
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    ".next/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

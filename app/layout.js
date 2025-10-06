@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="de">
+    <html lang="de" className="scroll-smooth">
       <body className="bg-background text-foreground font-sans">
         {/* Globale Navigation */}
         <header className="fixed top-0 left-0 w-full bg-white shadow z-50">
@@ -30,20 +30,23 @@ export default function RootLayout({ children }) {
 
             {/* Navigation Links */}
             <div className="flex gap-6 text-gray-700 font-medium">
-              <a href="#features" className="hover:text-blue-600">
+              <Link href="/#features" className="hover:text-blue-600">
                 Features
-              </a>
-              <a href="#pricing" className="hover:text-blue-600">
+              </Link>
+              <Link href="/#pricing" className="hover:text-blue-600">
                 Preise
-              </a>
-              <a href="#contact" className="hover:text-blue-600">
+              </Link>
+              <Link href="/#contact" className="hover:text-blue-600">
                 Kontakt
-              </a>
+              </Link>
+              <Link href="/demo" className="hover:text-blue-600">
+                Demo
+              </Link>
             </div>
           </nav>
         </header>
 
-        {/* Main Content mit Top-Padding wegen fixed Navbar */}
+        {/* Main Content */}
         <main className="pt-[72px]">{children}</main>
 
         {/* Footer */}

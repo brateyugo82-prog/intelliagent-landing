@@ -1,10 +1,13 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* ===== Custom Theme Variablen ===== */
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary: #2b88d8; /* deine Markenfarbe */
-  --secondary: #0f172a; /* dunkles Blau für Header/Footer */
+  --primary: #2b88d8; /* Markenfarbe */
+  --secondary: #0f172a; /* Dunkelblau Header/Footer */
 }
 
 @theme inline {
@@ -16,15 +19,17 @@
   --font-mono: var(--font-geist-mono, monospace);
 }
 
+/* Dark Mode */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    --primary: #2b88d8; /* bleibt gleich, wirkt auch auf dunklem Hintergrund */
-    --secondary: #1e293b; /* etwas helleres Blau-Grau */
+    --primary: #2b88d8;
+    --secondary: #1e293b;
   }
 }
 
+/* Globale Stile */
 html, body {
   margin: 0;
   padding: 0;
@@ -34,7 +39,6 @@ html, body {
   line-height: 1.6;
 }
 
-/* Globale Elemente */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
