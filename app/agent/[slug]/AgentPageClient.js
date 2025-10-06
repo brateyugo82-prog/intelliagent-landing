@@ -1,6 +1,5 @@
 "use client";
 
-import { notFound } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -94,8 +93,6 @@ und erstellt automatisch Reports, Diagramme und KPIs.
 
 export default function AgentPageClient({ slug }) {
   const agent = agents[slug];
-  if (!agent) return notFound();
-
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
 
@@ -122,6 +119,15 @@ export default function AgentPageClient({ slug }) {
       default:
         setOutput(`Demo für "${input}" ausgeführt.`);
     }
+  }
+
+  // Fallback falls slug ungültig ist – lieber ein leerer Screen statt notFound() hier
+  if (!agent) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-gray-900 text-gray-300">
+        <p>Agent nicht gefunden.</p>
+      </main>
+    );
   }
 
   return (
@@ -158,7 +164,10 @@ export default function AgentPageClient({ slug }) {
       {/* Demo */}
       <section className="max-w-3xl mx-auto px-6 py-16 text-center">
         <h2 className="text-3xl font-bold mb-6 text-white">🚀 Demo ausprobieren</h2>
-        <form onSubmit={handleDemo} className="flex flex-col md:flex-row gap-4 justify-center">
+        <form
+          onSubmit={handleDemo}
+          className="flex flex-col md:flex-row gap-4 justify-center"
+        >
           <input
             type="text"
             value={input}
