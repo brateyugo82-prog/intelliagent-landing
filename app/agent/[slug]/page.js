@@ -1,6 +1,5 @@
 "use client";
 
-import { notFound } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -105,16 +104,23 @@ und erstellt automatisch Reports, Diagramme und KPIs.
   },
 };
 
-export default async function AgentPage({ params }) {
-  const { slug } = await params; // ✅ Next.js 15: params ist async
+export default function AgentPage({ params }) {
+  const { slug } = params;
   const agent = agents[slug];
 
-  if (!agent) return notFound();
+  // Fallback: Agent nicht gefunden
+  if (!agent) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-gray-900 text-gray-300">
+        <p>❌ Agent nicht gefunden.</p>
+      </main>
+    );
+  }
 
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
 
-  function handleDemo(e) {
+  const handleDemo = (e) => {
     e.preventDefault();
     if (!input.trim()) return;
 
@@ -137,7 +143,7 @@ export default async function AgentPage({ params }) {
       default:
         setOutput(`Demo für "${input}" ausgeführt.`);
     }
-  }
+  };
 
   return (
     <main className="min-h-screen bg-gray-900 text-gray-100">
