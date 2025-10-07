@@ -3,48 +3,60 @@ import nodemailer from "nodemailer";
 
 export async function POST(req) {
   try {
-    const { name, email, message } = await req.json();
+    const { name, email, message, paket } = await req.json();
 
+    // 🧩 Validierung
     if (!name || !email || !message) {
       return NextResponse.json(
-        { error: "Bitte alle Felder ausfüllen." },
+        { success: false, error: "Bitte alle Felder ausfüllen." },
         { status: 400 }
       );
     }
 
-    // 🔑 Transporter mit SMTP Daten aus .env
+    // 🔑 SMTP-Verbindung mit Daten aus deiner .env.local
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || "587"),
-      secure: false,
+      secure: false, // true = Port 465
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
     });
 
-    // ✉️ E-Mail Daten
+    // ✉️ E-Mail-Inhalt
     const mailOptions = {
-      from: `"Landingpage Kontakt" <${process.env.SMTP_USER}>`,
-      to: process.env.CONTACT_RECEIVER, // Zieladresse aus .env
-      subject: `Neue Anfrage von ${name}`,
+      from: `"IntelliAgent Kontakt" <${process.env.SMTP_USER}>`,
+      to: process.env.CONTACT_RECEIVER, // Empfängeradresse (du oder dein Kunde)
+      subject: `📩 Neue Anfrage von ${name}`,
       html: `
         <h2>Neue Kontaktanfrage 🚀</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>E-Mail:</strong> ${email}</p>
-        <p><strong>Nachricht:</strong><br/>${message}</p>
+        ${paket ? `<p><strong>Gewähltes Paket:</strong> ${paket}</p>` : ""}
+        <p><strong>Nachricht:</strong></p>
+        <p>${message}</p>
       `,
     };
 
     // ✅ Mail senden
     await transporter.sendMail(mailOptions);
 
-    return NextResponse.json({ success: true, message: "E-Mail gesendet ✅" });
+    console.log("✅ E-Mail erfolgreich gesendet an", process.env.CONTACT_RECEIVER);
+
+    return NextResponse.json({
+      success: true,
+      message: "E-Mail wurde erfolgreich gesendet ✅",
+    });
   } catch (error) {
     console.error("❌ Fehler beim Mailversand:", error);
     return NextResponse.json(
-      { success: false, error: "Fehler beim Mailversand" },
+      { success: false, error: "Fehler beim Mailversand." },
       { status: 500 }
     );
   }
+}
+
+export async function GET() {
+  return NextResponse.json({ status: "ok", message: "Contact API aktiv ✅" });
 }

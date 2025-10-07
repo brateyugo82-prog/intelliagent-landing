@@ -1,7 +1,8 @@
 import AgentPageClient from "@/components/AgentPageClient";
 
-export default function AgentPage({ params }) {
-  const { slug } = params;
+export default async function AgentPage({ params }) {
+  const { slug } = await params;
+
 
   if (!slug) {
     return (

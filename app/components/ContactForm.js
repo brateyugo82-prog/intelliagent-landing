@@ -1,7 +1,7 @@
 "use client";
 
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
 const paketNamen = {
   starter: "Starter Paket",
@@ -9,16 +9,20 @@ const paketNamen = {
   premium: "Premium Paket",
 };
 
-export default function ContactForm() {
+function ContactFormInner() {
   const searchParams = useSearchParams();
   const [paket, setPaket] = useState("");
 
   useEffect(() => {
-    const selected = searchParams.get("paket");
-    if (selected && paketNamen[selected]) {
-      setPaket(paketNamen[selected]); // 👈 voller Name statt "starter"
-    }
-  }, [searchParams]);
+  const selected = searchParams.get("paket");
+  if (selected && paketNamen[selected]) {
+    setPaket(paketNamen[selected]);
+  } else if (selected) {
+    // falls direkt mit ?paket=slug kommt, fallback auf raw slug
+    setPaket(selected.charAt(0).toUpperCase() + selected.slice(1));
+  }
+}, [searchParams]);
+
 
   return (
     <form className="flex flex-col gap-4">
@@ -36,8 +40,6 @@ export default function ContactForm() {
         className="p-3 border rounded"
         required
       />
-
-      {/* vorausgefüllt mit Paket */}
       <input
         type="text"
         name="paket"
@@ -47,14 +49,12 @@ export default function ContactForm() {
         className="p-3 border rounded"
         required
       />
-
       <textarea
         name="message"
-        placeholder="Deine Nachricht..."
+        placeholder="Deine Nachricht …"
         className="p-3 border rounded"
         rows="4"
       />
-
       <button
         type="submit"
         className="bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition"
@@ -62,5 +62,13 @@ export default function ContactForm() {
         Anfrage senden
       </button>
     </form>
+  );
+}
+
+export default function ContactForm() {
+  return (
+    <Suspense fallback={<div className="text-gray-400">Lädt …</div>}>
+      <ContactFormInner />
+    </Suspense>
   );
 }
