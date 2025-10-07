@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import ContactForm from "@/components/ContactForm";
@@ -38,7 +39,7 @@ const steps = [
   },
 ];
 
-export default function HomePage() {
+function HomeContent() {
   return (
     <main className="flex flex-col items-center justify-center bg-gray-900 text-white">
       {/* Hero */}
@@ -112,9 +113,7 @@ export default function HomePage() {
             >
               <div className="bg-gray-800 p-8 rounded-3xl shadow-lg w-56 text-center hover:bg-gray-700 transition">
                 <div className="text-5xl mb-4">{step.icon}</div>
-                <h3 className="text-xl font-bold text-white mb-2">
-                  {step.title}
-                </h3>
+                <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
                 <p className="text-gray-400 text-sm">{step.desc}</p>
               </div>
               {i < steps.length - 1 && (
@@ -206,5 +205,14 @@ export default function HomePage() {
         </p>
       </footer>
     </main>
+  );
+}
+
+// Hauptkomponente mit Suspense-Wrapper
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="text-white text-center p-20">Lädt ...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }
