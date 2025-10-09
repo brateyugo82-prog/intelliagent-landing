@@ -1,6 +1,7 @@
 import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
+import Head from "next/head"; // <– import hinzufügen
 
 export const metadata = {
   title: "IntelliAgent Solutions – Automatisiert dein Business mit KI-Agenten",
@@ -16,15 +17,18 @@ export const metadata = {
   icons: {
     icon: "/favicon.ico",
   },
-  other: {
-    // Wichtig: Meta-Domain-Verification-Tag für Facebook
-    "facebook-domain-verification": "4bsoqp6x03tzrvh8wpcq6sefx2x228",
-  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="de" className="scroll-smooth">
+      <Head>
+        {/* 🔥 Facebook Domain Verification Meta Tag */}
+        <meta
+          name="facebook-domain-verification"
+          content="4bsoqp6x03tzrvh8wpcq6sefx2x228"
+        />
+      </Head>
       <body className="bg-background text-foreground font-sans">
         {/* Globale Navigation */}
         <header className="fixed top-0 left-0 w-full bg-white shadow z-50">
@@ -65,7 +69,8 @@ export default function RootLayout({ children }) {
 
         {/* Footer */}
         <footer className="mt-20 py-8 bg-gray-100 text-center text-sm text-gray-600">
-          © {new Date().getFullYear()} IntelliAgent Solutions – Alle Rechte vorbehalten.
+          © {new Date().getFullYear()} IntelliAgent Solutions – Alle Rechte
+          vorbehalten.
         </footer>
       </body>
     </html>
