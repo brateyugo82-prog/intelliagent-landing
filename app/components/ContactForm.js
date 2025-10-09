@@ -1,74 +1,87 @@
-"use client";
+import { useState } from "react";
 
-import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-
-const paketNamen = {
-  starter: "Starter Paket",
-  business: "Business Paket",
-  premium: "Premium Paket",
-};
-
-function ContactFormInner() {
-  const searchParams = useSearchParams();
+export default function ContactForm() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [paket, setPaket] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-  const selected = searchParams.get("paket");
-  if (selected && paketNamen[selected]) {
-    setPaket(paketNamen[selected]);
-  } else if (selected) {
-    // falls direkt mit ?paket=slug kommt, fallback auf raw slug
-    setPaket(selected.charAt(0).toUpperCase() + selected.slice(1));
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess(null);
+    setError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message, paket }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSuccess(data.message);
+        setName("");
+        setEmail("");
+        setMessage("");
+        setPaket("");
+      } else {
+        setError(data.error || "Fehler beim Senden.");
+      }
+    } catch (err) {
+      setError("Serverfehler. Bitte versuche es später erneut.");
+    } finally {
+      setLoading(false);
+    }
   }
-}, [searchParams]);
-
 
   return (
-    <form className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <input
         type="text"
-        name="name"
-        placeholder="Dein Name"
-        className="p-3 border rounded"
+        placeholder="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="w-full p-3 rounded-lg border"
         required
       />
       <input
         type="email"
-        name="email"
-        placeholder="Deine E-Mail"
-        className="p-3 border rounded"
-        required
-      />
-      <input
-        type="text"
-        name="paket"
-        value={paket}
-        onChange={(e) => setPaket(e.target.value)}
-        placeholder="Gewähltes Paket"
-        className="p-3 border rounded"
+        placeholder="E-Mail"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full p-3 rounded-lg border"
         required
       />
       <textarea
-        name="message"
-        placeholder="Deine Nachricht …"
-        className="p-3 border rounded"
-        rows="4"
+        placeholder="Nachricht"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        className="w-full p-3 rounded-lg border"
+        rows={5}
+        required
       />
+      <select
+        value={paket}
+        onChange={(e) => setPaket(e.target.value)}
+        className="w-full p-3 rounded-lg border"
+      >
+        <option value="">Paket wählen (optional)</option>
+        <option value="Starter">Starter</option>
+        <option value="Business">Business</option>
+        <option value="Premium">Premium</option>
+      </select>
       <button
         type="submit"
-        className="bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition"
+        disabled={loading}
+        className="bg-blue-600 text-white px-6 py-3 rounded-lg w-full"
       >
-        Anfrage senden
+        {loading ? "Senden..." : "Absenden"}
       </button>
+      {success && <div className="text-green-600 mt-2">{success}</div>}
+      {error && <div className="text-red-600 mt-2">{error}</div>}
     </form>
-  );
-}
-
-export default function ContactForm() {
-  return (
-    <Suspense fallback={<div className="text-gray-400">Lädt …</div>}>
-      <ContactFormInner />
-    </Suspense>
   );
 }
