@@ -3,9 +3,23 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = {
-  title: "IntelliAgent – Automatisiert dein Business mit KI-Agenten",
+  title: "IntelliAgent Solutions – Automatisiert dein Business mit KI-Agenten",
   description:
-    "IntelliAgent ist dein All-in-One KI-Agenten Hub: Content, Design, Publishing, Analytics und Communication in Microsoft Teams.",
+    "IntelliAgent Solutions ist dein All-in-One KI-Agenten Hub: Content, Design, Publishing, Analytics und Communication in Microsoft Teams.",
+  openGraph: {
+    title: "IntelliAgent Solutions",
+    description:
+      "Automatisierte Multi-Agenten-Plattform für Content, Design und Kommunikation.",
+    url: "https://intelliagentsolutions.de",
+    siteName: "IntelliAgent Solutions",
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
+  other: {
+    // Wichtig: Meta-Domain-Verification-Tag für Facebook
+    "facebook-domain-verification": "4bsoqp6x03tzrvh8wpcq6sefx2x228",
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -51,7 +65,7 @@ export default function RootLayout({ children }) {
 
         {/* Footer */}
         <footer className="mt-20 py-8 bg-gray-100 text-center text-sm text-gray-600">
-          © {new Date().getFullYear()} IntelliAgent – Alle Rechte vorbehalten.
+          © {new Date().getFullYear()} IntelliAgent Solutions – Alle Rechte vorbehalten.
         </footer>
       </body>
     </html>
