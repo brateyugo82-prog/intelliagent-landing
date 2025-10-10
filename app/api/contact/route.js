@@ -9,7 +9,7 @@ export async function POST(req) {
       return NextResponse.json({ error: "Fehlende Felder" }, { status: 400 });
     }
 
-    // ZeptoMail API-Aufruf (funktioniert auf Vercel)
+    // ZeptoMail API-Aufruf
     const response = await fetch("https://api.zeptomail.eu/v1.1/email", {
       method: "POST",
       headers: {
@@ -47,25 +47,15 @@ export async function POST(req) {
       }),
     });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("ZeptoMail Fehler:", data);
-      return NextResponse.json(
-        { error: "Mailversand fehlgeschlagen", details: data },
-        { status: 500 }
-      );
+    // 🧠 Sicheres Parsing des Responses
+    let data = null;
+    try {
+      const text = await response.text();
+      data = text ? JSON.parse(text) : null;
+    } catch (e) {
+      console.warn("Antwort konnte nicht als JSON gelesen werden:", e);
     }
 
-    return NextResponse.json({
-      success: true,
-      message: "E-Mail erfolgreich gesendet",
-    });
-  } catch (err) {
-    console.error("Serverfehler:", err);
-    return NextResponse.json(
-      { error: "Serverfehler beim Senden der Nachricht" },
-      { status: 500 }
-    );
-  }
-}
+    if (!response.ok) {
+      console.error("ZeptoMail Fehler:", data || response.statusText);
+      return NextResponse.
