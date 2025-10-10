@@ -1,70 +1,71 @@
-export const runtime = "nodejs";
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 
 export async function POST(req) {
   try {
-    const { name, email, message, paket } = await req.json();
+    const { name, email, message } = await req.json();
 
-    // 🧩 Validierung
+    // Sicherheitsprüfung
     if (!name || !email || !message) {
+      return NextResponse.json({ error: "Fehlende Felder" }, { status: 400 });
+    }
+
+    // ZeptoMail API-Aufruf (funktioniert auf Vercel)
+    const response = await fetch("https://api.zeptomail.eu/v1.1/email", {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        authorization: `Zoho-enczapikey ${process.env.ZEPTO_API_KEY}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        from: {
+          address: process.env.FROM_EMAIL || "no-reply@intelliagentsolutions.de",
+          name: "IntelliAgent Solutions",
+        },
+        to: [
+          {
+            email_address: {
+              address:
+                process.env.CONTACT_RECEIVER ||
+                "mark@intelliagentsolutions.de",
+            },
+          },
+        ],
+        subject: `Neue Nachricht von ${name}`,
+        htmlbody: `
+          <div style="font-family:Arial, sans-serif; line-height:1.5;">
+            <h2 style="color:#111;">Neue Anfrage über IntelliAgent Solutions</h2>
+            <p><b>Name:</b> ${name}</p>
+            <p><b>E-Mail:</b> ${email}</p>
+            <p><b>Nachricht:</b><br>${message}</p>
+            <hr/>
+            <p style="font-size:12px;color:#666;">
+              Diese Nachricht wurde automatisch über das Kontaktformular auf intelliagentsolutions.de gesendet.
+            </p>
+          </div>
+        `,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("ZeptoMail Fehler:", data);
       return NextResponse.json(
-        { success: false, error: "Bitte alle Pflichtfelder ausfüllen." },
-        { status: 400 }
+        { error: "Mailversand fehlgeschlagen", details: data },
+        { status: 500 }
       );
     }
 
-    // 🔑 SMTP-Verbindung (Zoho)
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || "587"),
-      secure: false, // true = Port 465 (SSL)
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-      tls: { rejectUnauthorized: false }, // falls Zoho TLS verwendet
-    });
-
-    // ✉️ Mail-Konfiguration
-    const mailOptions = {
-      from: `"IntelliAgent Solutions" <${process.env.SMTP_USER}>`,
-      to: process.env.CONTACT_RECEIVER,
-      replyTo: email, // damit du direkt dem Absender antworten kannst
-      subject: `📩 Neue Anfrage von ${name} über IntelliAgent Landing`,
-      html: `
-        <div style="font-family: Arial, sans-serif; color: #222;">
-          <h2>Neue Kontaktanfrage 🚀</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>E-Mail:</strong> ${email}</p>
-          ${paket ? `<p><strong>Gewähltes Paket:</strong> ${paket}</p>` : ""}
-          <p><strong>Nachricht:</strong></p>
-          <p style="white-space: pre-line;">${message}</p>
-          <hr style="margin: 20px 0;">
-          <p style="font-size: 0.9em; color: #888;">
-            Gesendet über <b>intelliagentsolutions.de</b>
-          </p>
-        </div>
-      `,
-    };
-
-    // 📬 Mail senden
-    const info = await transporter.sendMail(mailOptions);
-    console.log("✅ Mail erfolgreich gesendet:", info.messageId);
-
     return NextResponse.json({
       success: true,
-      message: "E-Mail erfolgreich gesendet ✅",
+      message: "E-Mail erfolgreich gesendet",
     });
-  } catch (error) {
-    console.error("❌ Fehler beim Mailversand:", error.message);
+  } catch (err) {
+    console.error("Serverfehler:", err);
     return NextResponse.json(
-      { success: false, error: "Fehler beim Mailversand: " + error.message },
+      { error: "Serverfehler beim Senden der Nachricht" },
       { status: 500 }
     );
   }
-}
-
-export async function GET() {
-  return NextResponse.json({ status: "ok", message: "Contact API aktiv ✅" });
 }
