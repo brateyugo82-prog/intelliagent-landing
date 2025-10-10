@@ -58,4 +58,29 @@ export async function POST(req) {
 
     if (!response.ok) {
       console.error("ZeptoMail Fehler:", data || response.statusText);
-      return NextResponse.
+      return NextResponse.json(
+        {
+          error: "Mailversand fehlgeschlagen",
+          details: data || response.statusText,
+        },
+        { status: 500 }
+      );
+    }
+
+    // Erfolgreicher Mailversand
+    return NextResponse.json({
+      success: true,
+      message: "E-Mail erfolgreich gesendet",
+    });
+  } catch (err) {
+    console.error("Serverfehler:", err);
+    return NextResponse.json(
+      {
+        error: "Serverfehler beim Senden der Nachricht",
+        details: err.message,
+      },
+      { status: 500 }
+    );
+  }
+}
+
