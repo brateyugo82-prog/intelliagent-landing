@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
+# Blockiere interne Ordner
+Disallow: /api/
+Disallow: /assets/
+Disallow: /_next/
+
+# Sitemap Pfad
 Sitemap: https://www.intelliagentsolutions.de/sitemap.xml
