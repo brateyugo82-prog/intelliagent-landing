@@ -1,0 +1,5 @@
+/* Team */
+Creator: Mark Malenica
+Project: IntelliAgent Solutions
+Location: Hannover, Germany
+Website: https://www.intelliagentsolutions.de
