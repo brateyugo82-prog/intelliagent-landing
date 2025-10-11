@@ -2,9 +2,26 @@ import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
 
+export const metadata = {
+  title: "IntelliAgent Solutions – Automatisierte Marketing-Agenten",
+  description:
+    "IntelliAgent automatisiert Content, Design, Kommunikation, Publishing und Analyse für Unternehmen.",
+  verification: {
+    google: "S0i5FJrK1sb6UCi7AWkMsKKAj_ap_vbyOkWAKjPmQqE",
+  },
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="de" className="scroll-smooth">
+      <head>
+        {/* Google Site Verification Meta Tag */}
+        <meta
+          name="google-site-verification"
+          content="S0i5FJrK1sb6UCi7AWkMsKKAj_ap_vbyOkWAKjPmQqE"
+        />
+      </head>
+
       <body className="bg-background text-foreground font-sans">
         {/* Globale Navigation */}
         <header className="fixed top-0 left-0 w-full bg-white shadow z-50">
