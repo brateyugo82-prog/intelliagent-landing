@@ -111,103 +111,119 @@ function HomeContent() {
         ))}
       </section>
 
-            {/* Pricing */}
-<section id="pricing" className="py-28 w-full px-6 bg-gray-900">
-  <h2 className="text-4xl font-bold text-center mb-16 text-white">
-    💼 Pakete & Preise
-  </h2>
+      {/* Pricing */}
+      <section id="pricing" className="py-28 w-full px-6 bg-gray-900">
+        <h2 className="text-4xl font-bold text-center mb-16 text-white">
+          💼 Pakete & Preise
+        </h2>
+        <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          {/* Starter */}
+          <Link
+            href="/pricing/starter?paket=starter#contact"
+            className="group bg-gray-800/60 border border-gray-700 hover:border-blue-500 transition p-8 rounded-2xl text-white text-center shadow-lg hover:shadow-blue-400/20 hover:-translate-y-1"
+          >
+            <h3 className="text-2xl font-bold mb-3">Starter</h3>
+            <p className="text-gray-300 mb-4">
+              Ideal für Einzelunternehmer & kleine Projekte.
+            </p>
+            <p className="text-3xl font-extrabold mb-6 text-blue-400">
+              249 € / Monat
+            </p>
+            <ul className="text-gray-400 space-y-1 mb-8 text-sm">
+              <li>📝 2 Blogartikel / Monat</li>
+              <li>🎨 2 passende Bilder</li>
+              <li>🚀 Automatische Veröffentlichung</li>
+            </ul>
+            <span className="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-medium hover:bg-blue-700 transition">
+              Details ansehen →
+            </span>
+          </Link>
 
-  <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          {/* Business */}
+          <Link
+            href="/pricing/business?paket=business#contact"
+            className="group bg-gray-800/60 border border-gray-700 hover:border-blue-500 transition p-8 rounded-2xl text-white text-center shadow-lg hover:shadow-blue-400/20 hover:-translate-y-1"
+          >
+            <h3 className="text-2xl font-bold mb-3">Business</h3>
+            <p className="text-gray-300 mb-4">
+              Für Startups & Agenturen mit wachsendem Content-Volumen.
+            </p>
+            <p className="text-3xl font-extrabold mb-6 text-blue-400">
+              799 € / Monat
+            </p>
+            <ul className="text-gray-400 space-y-1 mb-8 text-sm">
+              <li>📝 4–6 Blogartikel + 4 Social Posts</li>
+              <li>🎨 Professionelle Designs</li>
+              <li>📨 Communication-Agent</li>
+              <li>📊 Analytics & Reports</li>
+              <li>💬 Teams-Integration</li>
+            </ul>
+            <span className="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-medium hover:bg-blue-700 transition">
+              Details ansehen →
+            </span>
+          </Link>
 
-    {/* Starter */}
-    <Link
-      href="/pricing/starter?paket=starter#contact"
-      className="group bg-gray-800/60 border border-gray-700 hover:border-blue-500 transition p-8 rounded-2xl text-white text-center shadow-lg hover:shadow-blue-400/20 hover:-translate-y-1"
-    >
-      <h3 className="text-2xl font-bold mb-3">Starter</h3>
-      <p className="text-gray-300 mb-4">Ideal für Einzelunternehmer & kleine Projekte.</p>
-      <p className="text-3xl font-extrabold mb-6 text-blue-400">249 € / Monat</p>
-      <ul className="text-gray-400 space-y-1 mb-8 text-sm">
-        <li>📝 2 Blogartikel / Monat</li>
-        <li>🎨 2 passende Bilder</li>
-        <li>🚀 Automatische Veröffentlichung</li>
-      </ul>
-      <span className="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-medium hover:bg-blue-700 transition">
-        Details ansehen →
-      </span>
-    </Link>
+          {/* Professional */}
+          <Link
+            href="/pricing/professional?paket=professional#contact"
+            className="group bg-gray-800/60 border border-gray-700 hover:border-purple-500 transition p-8 rounded-2xl text-white text-center shadow-lg hover:shadow-purple-400/20 hover:-translate-y-1"
+          >
+            <h3 className="text-2xl font-bold mb-3">Professional</h3>
+            <p className="text-gray-300 mb-4">
+              Für Unternehmen mit Fokus auf Output, SEO & Automatisierung.
+            </p>
+            <p className="text-3xl font-extrabold mb-6 text-purple-400">
+              1 999 € / Monat
+            </p>
+            <ul className="text-gray-400 space-y-1 mb-8 text-sm">
+              <li>📝 6–8 Blogartikel + 8 Social-Posts</li>
+              <li>🎨 Video-Teaser & Designs</li>
+              <li>📈 Teams-Integration & Reporting</li>
+              <li>🔍 Erweiterte SEO-Optimierung</li>
+            </ul>
+            <span className="inline-block bg-purple-600 text-white px-6 py-3 rounded-full font-medium hover:bg-purple-700 transition">
+              Details ansehen →
+            </span>
+          </Link>
 
-    {/* Business */}
-    <Link
-      href="/pricing/business?paket=business#contact"
-      className="group bg-gray-800/60 border border-gray-700 hover:border-blue-500 transition p-8 rounded-2xl text-white text-center shadow-lg hover:shadow-blue-400/20 hover:-translate-y-1"
-    >
-      <h3 className="text-2xl font-bold mb-3">Business</h3>
-      <p className="text-gray-300 mb-4">Für Startups & Agenturen mit wachsendem Content-Volumen.</p>
-      <p className="text-3xl font-extrabold mb-6 text-blue-400">799 € / Monat</p>
-      <ul className="text-gray-400 space-y-1 mb-8 text-sm">
-        <li>📝 4–6 Blogartikel + 4 Social Posts</li>
-        <li>🎨 Professionelle Designs</li>
-        <li>📨 Communication-Agent</li>
-        <li>📊 Analytics & Reports</li>
-        <li>💬 Teams-Integration</li>
-      </ul>
-      <span className="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-medium hover:bg-blue-700 transition">
-        Details ansehen →
-      </span>
-    </Link>
-
-    {/* Professional */}
-    <Link
-      href="/pricing/professional?paket=professional#contact"
-      className="group bg-gray-800/60 border border-gray-700 hover:border-purple-500 transition p-8 rounded-2xl text-white text-center shadow-lg hover:shadow-purple-400/20 hover:-translate-y-1"
-    >
-      <h3 className="text-2xl font-bold mb-3">Professional</h3>
-      <p className="text-gray-300 mb-4">Für Unternehmen mit Fokus auf Output, SEO & Automatisierung.</p>
-      <p className="text-3xl font-extrabold mb-6 text-purple-400">1 999 € / Monat</p>
-      <ul className="text-gray-400 space-y-1 mb-8 text-sm">
-        <li>📝 6–8 Blogartikel + 8 Social-Posts</li>
-        <li>🎨 Video-Teaser & Designs</li>
-        <li>📈 Teams-Integration & Reporting</li>
-        <li>🔍 Erweiterte SEO-Optimierung</li>
-      </ul>
-      <span className="inline-block bg-purple-600 text-white px-6 py-3 rounded-full font-medium hover:bg-purple-700 transition">
-        Details ansehen →
-      </span>
-    </Link>
-
-    {/* Enterprise */}
-    <Link
-      href="/pricing/enterprise?paket=enterprise#contact"
-      className="group bg-gradient-to-br from-yellow-500/10 to-yellow-900/20 border-2 border-yellow-500 hover:border-yellow-400 transition p-8 rounded-2xl text-white text-center shadow-lg hover:shadow-yellow-300/30 hover:-translate-y-1 relative"
-    >
-      <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-500 text-black text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-        ⭐ Empfohlen für Unternehmen
-      </span>
-      <h3 className="text-2xl font-bold mb-3 text-yellow-400 mt-2">Enterprise</h3>
-      <p className="text-gray-300 mb-4">Vollautomatisierte Marketing-Power mit Strategie, APIs & Betreuung.</p>
-      <p className="text-3xl font-extrabold mb-6 text-yellow-400">ab 3 999 € / Monat</p>
-      <ul className="text-gray-400 space-y-1 mb-8 text-sm">
-        <li>📝 10–15 Blogartikel + 15–20 Social Posts</li>
-        <li>🔗 API-Integrationen (CRM, Teams, WordPress)</li>
-        <li>📊 Individuelle Dashboards & Audits</li>
-        <li>🤝 Persönlicher Ansprechpartner</li>
-        <li>🧠 Custom Strategie & Enterprise Support</li>
-      </ul>
-      <span className="inline-block bg-yellow-500 text-black px-6 py-3 rounded-full font-medium hover:bg-yellow-400 transition">
-        Details ansehen →
-      </span>
-    </Link>
-  </div>
-</section>
-
-
+          {/* Enterprise */}
+          <Link
+            href="/pricing/enterprise?paket=enterprise#contact"
+            className="group bg-gradient-to-br from-yellow-500/10 to-yellow-900/20 border-2 border-yellow-500 hover:border-yellow-400 transition p-8 rounded-2xl text-white text-center shadow-lg hover:shadow-yellow-300/30 hover:-translate-y-1 relative"
+          >
+            <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-500 text-black text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+              ⭐ Empfohlen für Unternehmen
+            </span>
+            <h3 className="text-2xl font-bold mb-3 text-yellow-400 mt-2">
+              Enterprise
+            </h3>
+            <p className="text-gray-300 mb-4">
+              Vollautomatisierte Marketing-Power mit Strategie, APIs &
+              Betreuung.
+            </p>
+            <p className="text-3xl font-extrabold mb-6 text-yellow-400">
+              ab 3 999 € / Monat
+            </p>
+            <ul className="text-gray-400 space-y-1 mb-8 text-sm">
+              <li>📝 10–15 Blogartikel + 15–20 Social Posts</li>
+              <li>🔗 API-Integrationen (CRM, Teams, WordPress)</li>
+              <li>📊 Individuelle Dashboards & Audits</li>
+              <li>🤝 Persönlicher Ansprechpartner</li>
+              <li>🧠 Custom Strategie & Enterprise Support</li>
+            </ul>
+            <span className="inline-block bg-yellow-500 text-black px-6 py-3 rounded-full font-medium hover:bg-yellow-400 transition">
+              Details ansehen →
+            </span>
+          </Link>
+        </div>
+      </section>
 
       {/* Kontakt */}
       <section id="contact" className="py-28 text-center bg-gray-50 w-full px-6 text-gray-900">
         <h2 className="text-4xl font-bold mb-6">Starte jetzt mit IntelliAgent</h2>
         <p className="text-gray-700 mb-8 text-lg max-w-2xl mx-auto">
-          Dein smarter Assistent für Content, Design, Publishing, Kommunikation und Analyse.
+          Dein smarter Assistent für Content, Design, Publishing, Kommunikation
+          und Analyse.
         </p>
         <div className="max-w-xl mx-auto text-gray-900">
           <ContactForm />
@@ -217,12 +233,15 @@ function HomeContent() {
       {/* Footer */}
       <footer className="mt-20 border-t w-full pt-6 text-center text-sm text-gray-500 bg-gray-900">
         <div className="h-[3px] w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mb-4"></div>
-        <div className="flex justify-center space-x-6 mb-4">
+        <div className="flex justify-center flex-wrap gap-6 mb-4">
           <Link href="/datenschutz" className="hover:underline text-white">
             Datenschutz
           </Link>
           <Link href="/impressum" className="hover:underline text-white">
             Impressum
+          </Link>
+          <Link href="/datendeletion" className="hover:underline text-white">
+            Datenlöschung
           </Link>
           <Link href="/pricing/enterprise" className="hover:underline text-blue-400">
             🚀 IntelliAgent für Unternehmen
