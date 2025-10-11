@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="de" className="scroll-smooth">
       <head>
-        {/* Google Site Verification Meta Tag */}
+        {/* 🔥 Doppelte Absicherung: Google Tag direkt im Head */}
         <meta
           name="google-site-verification"
           content="S0i5FJrK1sb6UCi7AWkMsKKAj_ap_vbyOkWAKjPmQqE"
@@ -23,10 +23,9 @@ export default function RootLayout({ children }) {
       </head>
 
       <body className="bg-background text-foreground font-sans">
-        {/* Globale Navigation */}
+        {/* Navigation */}
         <header className="fixed top-0 left-0 w-full bg-white shadow z-50">
           <nav className="max-w-6xl mx-auto flex justify-between items-center p-4">
-            {/* Logo + Brand */}
             <Link href="/" className="flex items-center gap-2">
               <Image
                 src="/logo.png"
@@ -39,7 +38,6 @@ export default function RootLayout({ children }) {
               </span>
             </Link>
 
-            {/* Navigation Links */}
             <div className="flex gap-6 text-gray-700 font-medium">
               <Link href="/#features" className="hover:text-blue-600">
                 Features
@@ -57,7 +55,7 @@ export default function RootLayout({ children }) {
           </nav>
         </header>
 
-        {/* Main Content */}
+        {/* Hauptinhalt */}
         <main className="pt-[72px]">{children}</main>
 
         {/* Footer */}
