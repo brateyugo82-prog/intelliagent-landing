@@ -70,7 +70,7 @@ function HomeContent() {
       {/* CTA */}
       <section className="py-16 bg-gradient-to-r from-blue-700 via-blue-600 to-gray-800 w-full text-center">
         <motion.div
-          className="flex gap-6 justify-center"
+          className="flex gap-6 justify-center flex-wrap"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 1 }}
@@ -231,14 +231,11 @@ function HomeContent() {
       </section>
 
       {/* Footer */}
-      <footer className="mt-20 border-t w-full pt-6 text-center text-sm text-gray-500 bg-gray-900">
+      <footer className="mt-20 border-t w-full pt-6 text-center text-sm text-gray-400 bg-gray-900">
         <div className="h-[3px] w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mb-4"></div>
         <div className="flex justify-center flex-wrap gap-6 mb-4">
-          <Link href="/datenschutz" className="hover:underline text-white">
-            Datenschutz
-          </Link>
-          <Link href="/impressum" className="hover:underline text-white">
-            Impressum
+          <Link href="/legal" className="hover:underline text-white">
+            Rechtliches & Datenschutz
           </Link>
           <Link href="/datendeletion" className="hover:underline text-white">
             Datenlöschung
@@ -247,8 +244,8 @@ function HomeContent() {
             🚀 IntelliAgent für Unternehmen
           </Link>
         </div>
-        <p className="text-gray-400 mb-4">
-          © {new Date().getFullYear()} IntelliAgent by Mark Malenica
+        <p className="text-gray-500 mb-4">
+          © {new Date().getFullYear()} IntelliAgent Solutions · by Mark Malenica
         </p>
       </footer>
     </main>
