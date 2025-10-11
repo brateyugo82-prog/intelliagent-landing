@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const metadata = {
   title: "Datenlöschung | IntelliAgent Solutions",
   description:
@@ -25,9 +27,9 @@ export default function DataDeletionPage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-16 text-gray-800 leading-relaxed">
       <nav className="text-sm text-gray-500 mb-6">
-        <a href="/" className="hover:underline text-indigo-600">
+        <Link href="/" className="hover:underline text-indigo-600">
           Startseite
-        </a>{" "}
+        </Link>{" "}
         › <span className="text-gray-600">Datenlöschung</span>
       </nav>
 
