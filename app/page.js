@@ -198,8 +198,7 @@ function HomeContent() {
               Enterprise
             </h3>
             <p className="text-gray-300 mb-4">
-              Vollautomatisierte Marketing-Power mit Strategie, APIs &
-              Betreuung.
+              Vollautomatisierte Marketing-Power mit Strategie, APIs & Betreuung.
             </p>
             <p className="text-3xl font-extrabold mb-6 text-yellow-400">
               ab 3 999 € / Monat
@@ -219,7 +218,10 @@ function HomeContent() {
       </section>
 
       {/* Kontakt */}
-      <section id="contact" className="py-28 text-center bg-gray-50 w-full px-6 text-gray-900">
+      <section
+        id="contact"
+        className="py-28 text-center bg-gray-50 w-full px-6 text-gray-900"
+      >
         <h2 className="text-4xl font-bold mb-6">Starte jetzt mit IntelliAgent</h2>
         <p className="text-gray-700 mb-8 text-lg max-w-2xl mx-auto">
           Dein smarter Assistent für Content, Design, Publishing, Kommunikation
@@ -229,25 +231,6 @@ function HomeContent() {
           <ContactForm />
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="mt-20 border-t w-full pt-6 text-center text-sm text-gray-400 bg-gray-900">
-        <div className="h-[3px] w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mb-4"></div>
-        <div className="flex justify-center flex-wrap gap-6 mb-4">
-          <Link href="/legal" className="hover:underline text-white">
-            Rechtliches & Datenschutz
-          </Link>
-          <Link href="/datendeletion" className="hover:underline text-white">
-            Datenlöschung
-          </Link>
-          <Link href="/pricing/enterprise" className="hover:underline text-blue-400">
-            🚀 IntelliAgent für Unternehmen
-          </Link>
-        </div>
-        <p className="text-gray-500 mb-4">
-          © {new Date().getFullYear()} IntelliAgent Solutions · by Mark Malenica
-        </p>
-      </footer>
     </main>
   );
 }

@@ -1,61 +1,72 @@
+import { generateMetadata } from "@/app/utils/metaUtils";
 import React from "react";
+import Link from "next/link";
 
-export const metadata = {
-  title: "Allgemeine Geschäftsbedingungen (AGB) | IntelliAgent Solutions",
-  description:
-    "Allgemeine Geschäftsbedingungen (AGB) von IntelliAgent Solutions – gültig für Nutzung, Lizenzierung und Leistungen unserer SaaS-Plattform.",
-};
+export const metadata = generateMetadata(
+  "Allgemeine Geschäftsbedingungen (AGB)",
+  "AGB von IntelliAgent Solutions – B2B-orientierte Bedingungen für Nutzung, Lizenzierung und Leistungen unserer KI-Marketing-Plattform.",
+  "/agb"
+);
 
 export default function AgbPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#111827] to-[#1e1e2f] text-gray-100 py-32 px-6">
-      <section className="max-w-4xl mx-auto bg-[#111827]/70 backdrop-blur-xl border border-gray-800 rounded-3xl shadow-2xl p-10 space-y-8">
-        <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg">
+    <main className="min-h-screen bg-gray-900 text-gray-100 py-32 px-6">
+      <section className="max-w-4xl mx-auto bg-gray-900 border border-gray-800 rounded-3xl p-10 space-y-6">
+        {/* Breadcrumb */}
+        <nav className="text-sm text-gray-400 mb-4">
+          <Link href="/" className="hover:underline text-blue-400">
+            Startseite
+          </Link>{" "}
+          › <span>AGB</span>
+        </nav>
+
+        <h1 className="text-4xl font-bold text-blue-400 text-center">
           📄 Allgemeine Geschäftsbedingungen (AGB)
         </h1>
 
-        <p>
+        <p className="text-gray-300">
           Diese AGB regeln die Vertragsbeziehung zwischen{" "}
-          <strong>IntelliAgent Solutions – Mark Malenica</strong> (nachfolgend
-          „Anbieter“) und den Nutzern der angebotenen Software- und
-          KI-Dienstleistungen (nachfolgend „Kunden“).
+          <strong>IntelliAgent Solutions – Mark Malenica</strong> (&quot;Anbieter&quot;) und
+          Business-Kunden (&quot;Kunden&quot;). Sie richten sich ausschließlich an{" "}
+          <strong>B2B</strong>.
         </p>
 
-        <h2 className="text-xl font-semibold mt-8 mb-2 text-blue-400">
+        <h2 className="text-2xl font-semibold mt-8 mb-2 text-blue-300">
           1. Leistungsbeschreibung
         </h2>
-        <p>
-          Der Anbieter stellt über seine Plattform automatisierte Content-,
-          Design- und Kommunikationslösungen auf Basis von KI bereit.
-          Leistungsumfang, Preise und Laufzeiten ergeben sich aus den
-          jeweiligen Paketen oder Verträgen.
+        <p className="text-gray-300">
+          Der Anbieter stellt über seine Plattform KI-gestützte Lösungen für
+          Content, Design, Kommunikation, Publishing und Analytics bereit.
+          Umfang, Laufzeiten und Preise ergeben sich aus den jeweiligen Paketen
+          oder Verträgen.
         </p>
 
-        <h2 className="text-xl font-semibold mt-8 mb-2 text-blue-400">
+        <h2 className="text-2xl font-semibold mt-8 mb-2 text-blue-300">
           2. Vertragslaufzeit und Kündigung
         </h2>
-        <p>
+        <p className="text-gray-300">
           Verträge laufen monatlich, sofern nicht anders vereinbart. Eine
-          Kündigung ist jederzeit zum Monatsende möglich.
+          Kündigung ist jederzeit zum Monatsende möglich. Individuelle
+          Enterprise-Vereinbarungen bleiben unberührt.
         </p>
 
-        <h2 className="text-xl font-semibold mt-8 mb-2 text-blue-400">
+        <h2 className="text-2xl font-semibold mt-8 mb-2 text-blue-300">
           3. Haftung und Gewährleistung
         </h2>
-        <p>
-          Der Anbieter haftet nur für Vorsatz und grobe Fahrlässigkeit. Für
-          Ausfälle durch Drittanbieter-APIs (z. B. Meta, TikTok, OpenAI)
-          übernimmt IntelliAgent keine Verantwortung.
+        <p className="text-gray-300">
+          Der Anbieter haftet für Vorsatz und grobe Fahrlässigkeit. Für Ausfälle
+          von Drittanbieter-APIs (z. B. Meta, OpenAI, WordPress) wird keine
+          Haftung übernommen.
         </p>
 
-        <h2 className="text-xl font-semibold mt-8 mb-2 text-blue-400">
+        <h2 className="text-2xl font-semibold mt-8 mb-2 text-blue-300">
           4. Datenschutz
         </h2>
-        <p>
+        <p className="text-gray-300">
           Der Schutz personenbezogener Daten richtet sich nach der{" "}
-          <a href="/datenschutz" className="text-blue-400 underline">
+          <Link href="/datenschutz" className="text-blue-400 underline">
             Datenschutzerklärung
-          </a>{" "}
+          </Link>{" "}
           von IntelliAgent Solutions.
         </p>
 

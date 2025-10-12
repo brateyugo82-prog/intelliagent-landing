@@ -37,19 +37,19 @@ export default function DatenschutzPage() {
           <br />
           E-Mail:{" "}
           <a
-            href="mailto:info@intelliagent.de"
+            href="mailto:info@intelliagentsolutions.de"
             className="text-blue-400 underline"
           >
-            info@intelliagent.de
+            info@intelliagentsolutions.de
           </a>
           <br />
           Website:{" "}
           <a
-            href="https://www.intelliagent.de"
+            href="https://www.intelliagentsolutions.de"
             className="text-blue-400 underline"
             target="_blank"
           >
-            https://intelliagent.de
+            www.intelliagentsolutions.de
           </a>
         </p>
 
@@ -128,7 +128,8 @@ export default function DatenschutzPage() {
         {/* Footer */}
         <footer className="mt-12 text-sm text-gray-500 border-t border-gray-800 pt-6">
           <p className="text-center text-gray-400">
-            © {new Date().getFullYear()} IntelliAgent Solutions. Alle Rechte vorbehalten.
+            © {new Date().getFullYear()} IntelliAgent Solutions. Alle Rechte
+            vorbehalten.
           </p>
         </footer>
       </div>

@@ -1,11 +1,5 @@
 import React from "react";
 
-export const metadata = {
-  title: "Privacy Policy (System & APIs) | IntelliAgent Solutions",
-  description:
-    "Informationen zur technischen Verarbeitung, Speicherung und Sicherheit von API- und Systemdaten bei IntelliAgent Solutions.",
-};
-
 export default function PrivacyPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#111827] to-[#1e1e2f] text-gray-100 py-32 px-6">

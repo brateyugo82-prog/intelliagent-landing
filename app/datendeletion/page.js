@@ -1,27 +1,11 @@
+import { generateMetadata } from "@/app/utils/metaUtils";
 import Link from "next/link";
 
-export const metadata = {
-  title: "Datenlöschung | IntelliAgent Solutions",
-  description:
-    "Anleitung zur Löschung deiner gespeicherten Daten bei IntelliAgent Solutions gemäß DSGVO. Hier erfährst du, wie du deine Daten löschen lassen kannst.",
-  openGraph: {
-    title: "Datenlöschung | IntelliAgent Solutions",
-    description:
-      "So kannst du deine personenbezogenen Daten bei IntelliAgent Solutions löschen lassen – schnell und DSGVO-konform.",
-    url: "https://www.intelliagentsolutions.de/datendeletion",
-    siteName: "IntelliAgent Solutions",
-    locale: "de_DE",
-    type: "article",
-    images: [
-      {
-        url: "https://www.intelliagentsolutions.de/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "IntelliAgent Solutions – AI-Driven Marketing Automation",
-      },
-    ],
-  },
-};
+export const metadata = generateMetadata(
+  "Datenlöschung",
+  "Anleitung zur Löschung deiner gespeicherten Daten bei IntelliAgent Solutions gemäß DSGVO. Hier erfährst du, wie du deine Daten löschen lassen kannst.",
+  "/datendeletion"
+);
 
 export default function DataDeletionPage() {
   return (

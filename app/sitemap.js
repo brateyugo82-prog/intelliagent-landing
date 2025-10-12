@@ -1,5 +1,9 @@
+import fs from "fs";
+import path from "path";
+
 export default async function sitemap() {
-  const baseUrl = "https://www.intelliagentsolutions.de"; // deine Domain
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.intelliagentsolutions.de";
 
   const staticPages = [
     "",
@@ -19,10 +23,30 @@ export default async function sitemap() {
     "legal",
   ];
 
-  return staticPages.map((page) => ({
-    url: `${baseUrl}/${page}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly",
-    priority: page === "" ? 1.0 : 0.7,
-  }));
+  const getLastModified = (pagePath) => {
+    try {
+      const fullPath = path.join(process.cwd(), "app", pagePath, "page.js");
+      const stats = fs.statSync(fullPath);
+      return stats.mtime.toISOString().split("T")[0];
+    } catch {
+      return new Date().toISOString().split("T")[0];
+    }
+  };
+
+  return staticPages.map((page) => {
+    const url = `${baseUrl}${page ? `/${page}` : ""}`;
+    const lastModified = getLastModified(page);
+    let priority = 0.7;
+
+    if (page === "") priority = 1.0;
+    else if (page.startsWith("agent")) priority = 0.8;
+    else if (["pricing", "demo"].includes(page)) priority = 0.9;
+
+    return {
+      url,
+      lastModified,
+      changeFrequency: "monthly",
+      priority,
+    };
+  });
 }

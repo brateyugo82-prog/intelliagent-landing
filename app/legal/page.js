@@ -1,19 +1,11 @@
+import { generateMetadata } from "@/app/utils/metaUtils";
 import Link from "next/link";
 
-export const metadata = {
-  title: "Rechtliches & Datenschutz | IntelliAgent Solutions",
-  description:
-    "Alle rechtlichen Informationen zu IntelliAgent Solutions: Impressum, Datenschutz, AGB, Nutzungsbedingungen und Datenlöschung gemäß DSGVO.",
-  openGraph: {
-    title: "Rechtliches & Datenschutz | IntelliAgent Solutions",
-    description:
-      "Finde hier alle rechtlichen und datenschutzrelevanten Informationen rund um IntelliAgent Solutions.",
-    url: "https://www.intelliagentsolutions.de/legal",
-    siteName: "IntelliAgent Solutions",
-    locale: "de_DE",
-    type: "website",
-  },
-};
+export const metadata = generateMetadata(
+  "Rechtliches & Datenschutz",
+  "Alle rechtlichen Informationen zu IntelliAgent Solutions: Impressum, Datenschutz, AGB, Nutzungsbedingungen und Datenlöschung gemäß DSGVO.",
+  "/legal"
+);
 
 export default function LegalPage() {
   return (

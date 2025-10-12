@@ -1,10 +1,11 @@
+import { generateMetadata } from "@/app/utils/metaUtils";
 import React from "react";
 
-export const metadata = {
-  title: "Nutzungsbedingungen | IntelliAgent Solutions",
-  description:
-    "Nutzungsbedingungen der IntelliAgent-Plattform – Regelungen zur Verwendung, Accounts, APIs und Automatisierung.",
-};
+export const metadata = generateMetadata(
+  "Nutzungsbedingungen (Plattform)",
+  "Nutzungsbedingungen der IntelliAgent-Plattform – Regelungen zur Verwendung, Accounts, APIs und Automatisierung.",
+  "/terms"
+);
 
 export default function TermsPage() {
   return (
