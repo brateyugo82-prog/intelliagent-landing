@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 
 export async function POST(req) {
   try {
-    const { name, email, message } = await req.json();
+    const { name, email, message, paket } = await req.json();
     if (!name || !email || !message) {
       return NextResponse.json({ error: "Fehlende Felder" }, { status: 400 });
     }
@@ -19,9 +19,26 @@ export async function POST(req) {
       toEmail,
       apiKeyLoaded: !!apiKey,
       apiKeySnippet: apiKey ? apiKey.slice(0, 20) + "..." : "undefined",
+      paket,
     });
 
-    // ========== ZEPTO MAIL (HTTP API) ==========
+    const htmlContent = `
+      <div style="font-family:Arial,sans-serif;line-height:1.6;">
+        <h2>Neue Anfrage über IntelliAgent Solutions</h2>
+        <p><b>Name:</b> ${name}</p>
+        <p><b>E-Mail:</b> ${email}</p>
+        ${
+          paket
+            ? `<p><b>Gewähltes Paket:</b> ${paket.toUpperCase()}</p>`
+            : ""
+        }
+        <p><b>Nachricht:</b><br>${message}</p>
+        <hr/>
+        <p style="font-size:12px;color:#666;">Diese Nachricht wurde automatisch über das Kontaktformular auf intelliagentsolutions.de gesendet.</p>
+      </div>
+    `;
+
+    // ========== ZEPTO MAIL ==========
     if (hasZepto) {
       const headers = {
         Accept: "application/json",
@@ -34,15 +51,8 @@ export async function POST(req) {
       const body = {
         from: { address: fromEmail, name: "IntelliAgent Solutions" },
         to: [{ email_address: { address: toEmail } }],
-        subject: `Neue Nachricht von ${name}`,
-        htmlbody: `
-          <div style="font-family:Arial,sans-serif;line-height:1.6;">
-            <h2>Neue Anfrage über IntelliAgent Solutions</h2>
-            <p><b>Name:</b> ${name}</p>
-            <p><b>E-Mail:</b> ${email}</p>
-            <p><b>Nachricht:</b><br>${message}</p>
-          </div>
-        `,
+        subject: `Neue Nachricht von ${name} (${paket || "ohne Paket"})`,
+        htmlbody: htmlContent,
       };
 
       const response = await fetch("https://api.zeptomail.eu/v1.1/email", {
@@ -54,7 +64,6 @@ export async function POST(req) {
       const raw = await response.text();
       console.log("📬 ZeptoMail Antwort:", response.status, raw);
 
-      // Erfolgreicher Versand über ZeptoMail
       if (response.ok) {
         return NextResponse.json({
           success: true,
@@ -62,7 +71,6 @@ export async function POST(req) {
         });
       }
 
-      // Fehlgeschlagen → fallback
       console.warn("⚠️ ZeptoMail fehlgeschlagen, nutze SMTP:", raw);
     }
 
@@ -82,15 +90,8 @@ export async function POST(req) {
     await transporter.sendMail({
       from: `"IntelliAgent Solutions" <${fromEmail}>`,
       to: toEmail,
-      subject: `Neue Nachricht von ${name}`,
-      html: `
-        <div style="font-family:Arial,sans-serif;line-height:1.6;">
-          <h2>Neue Anfrage über IntelliAgent Solutions</h2>
-          <p><b>Name:</b> ${name}</p>
-          <p><b>E-Mail:</b> ${email}</p>
-          <p><b>Nachricht:</b><br>${message}</p>
-        </div>
-      `,
+      subject: `Neue Nachricht von ${name} (${paket || "ohne Paket"})`,
+      html: htmlContent,
     });
 
     console.log("✅ SMTP erfolgreich.");
