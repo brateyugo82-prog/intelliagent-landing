@@ -8,82 +8,73 @@ export async function POST(req) {
       return NextResponse.json({ error: "Fehlende Felder" }, { status: 400 });
     }
 
-    // ✅ Debug-Ausgabe, um ENV auf Vercel zu prüfen
+    const endpoint = "https://api.zeptomail.eu/v1.1/email";
+    const apiKey = process.env.ZEPTO_API_KEY?.trim();
+
+    // 🧠 Debug: prüfen, ob ENV korrekt geladen wurde
     console.log("🔍 ENV CHECK:", {
-      endpoint: "https://api.zeptomail.eu/v1.1/email",
+      endpoint,
       from: process.env.FROM_EMAIL,
       to: process.env.CONTACT_RECEIVER,
-      apiKeyLoaded: !!process.env.ZEPTO_API_KEY,
+      apiKeyLoaded: !!apiKey,
     });
 
-    // ✅ ZeptoMail API-Aufruf
-    const response = await fetch("https://api.zeptomail.eu/v1.1/email", {
+    const payload = {
+      from: {
+        address: "no-reply@intelliagentsolutions.de", // exakt wie in ZeptoMail verifiziert
+        name: "IntelliAgent Solutions",
+      },
+      to: [
+        {
+          email_address: {
+            address:
+              process.env.CONTACT_RECEIVER || "mark@intelliagentsolutions.de",
+          },
+        },
+      ],
+      subject: `Neue Nachricht von ${name}`,
+      htmlbody: `
+        <div style="font-family:Arial, sans-serif; line-height:1.6;">
+          <h2>Neue Anfrage über IntelliAgent Solutions</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>E-Mail:</strong> ${email}</p>
+          <p><strong>Nachricht:</strong><br>${message}</p>
+          <hr/>
+          <p style="font-size:12px;color:#666;">Diese Nachricht wurde automatisch über das Kontaktformular auf intelliagentsolutions.de gesendet.</p>
+        </div>
+      `,
+    };
+
+    const response = await fetch(endpoint, {
       method: "POST",
       headers: {
-        accept: "application/json",
-        authorization: `Zoho-enczapikey ${process.env.ZEPTO_API_KEY}`,
-        "content-type": "application/json",
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Zoho-enczapikey ${apiKey}`,
       },
-      body: JSON.stringify({
-        from: {
-          address: "no-reply@intelliagentsolutions.de",
-          name: "IntelliAgent Solutions",
-        },
-        to: [
-          {
-            email_address: {
-              address:
-                process.env.CONTACT_RECEIVER ||
-                "mark@intelliagentsolutions.de",
-            },
-          },
-        ],
-        subject: `Neue Nachricht von ${name}`,
-        htmlbody: `
-          <div style="font-family:Arial, sans-serif; line-height:1.5;">
-            <h2 style="color:#111;">Neue Anfrage über IntelliAgent Solutions</h2>
-            <p><b>Name:</b> ${name}</p>
-            <p><b>E-Mail:</b> ${email}</p>
-            <p><b>Nachricht:</b><br>${message}</p>
-            <hr/>
-            <p style="font-size:12px;color:#666;">
-              Diese Nachricht wurde automatisch über das Kontaktformular auf intelliagentsolutions.de gesendet.
-            </p>
-          </div>
-        `,
-      }),
+      body: JSON.stringify(payload),
     });
 
-    // 🧠 Sicheres Lesen der Antwort
-    const text = await response.text();
-    let data;
-    try {
-      data = text ? JSON.parse(text) : null;
-    } catch {
-      data = { raw: text || "(leere Antwort von ZeptoMail)" };
-    }
+    // 🧠 Debug-Ausgabe
+    const raw = await response.text();
+    console.log("🔍 ZeptoMail response status:", response.status);
+    console.log("🔍 ZeptoMail response body:", raw);
 
     if (!response.ok) {
-      console.error("❌ ZeptoMail Fehler:", data);
       return NextResponse.json(
-        { error: "Mailversand fehlgeschlagen", details: data },
-        { status: 500 }
+        { error: "Mailversand fehlgeschlagen", raw },
+        { status: response.status }
       );
     }
 
-    console.log("✅ ZeptoMail erfolgreich:", data);
-
     return NextResponse.json({
       success: true,
-      message: "E-Mail erfolgreich gesendet!",
+      message: "E-Mail erfolgreich gesendet",
     });
   } catch (err) {
-    console.error("💥 Serverfehler:", err);
+    console.error("❌ Serverfehler:", err);
     return NextResponse.json(
-      {
-        error: "Serverfehler beim Senden der Nachricht",
-        details: err.message,
-      },
+      { error: "Serverfehler beim Senden der Nachricht", details: err.message },
       { status: 500 }
     );
   }
