@@ -4,12 +4,19 @@ export async function POST(req) {
   try {
     const { name, email, message } = await req.json();
 
-    // Sicherheitsprüfung
     if (!name || !email || !message) {
       return NextResponse.json({ error: "Fehlende Felder" }, { status: 400 });
     }
 
-    // ZeptoMail API-Aufruf
+    // ✅ Debug-Ausgabe, um ENV auf Vercel zu prüfen
+    console.log("🔍 ENV CHECK:", {
+      endpoint: "https://api.zeptomail.eu/v1.1/email",
+      from: process.env.FROM_EMAIL,
+      to: process.env.CONTACT_RECEIVER,
+      apiKeyLoaded: !!process.env.ZEPTO_API_KEY,
+    });
+
+    // ✅ ZeptoMail API-Aufruf
     const response = await fetch("https://api.zeptomail.eu/v1.1/email", {
       method: "POST",
       headers: {
@@ -47,33 +54,31 @@ export async function POST(req) {
       }),
     });
 
-    // 🧠 Sicheres Parsing des Responses
-    let data = null;
+    // 🧠 Sicheres Lesen der Antwort
+    const text = await response.text();
+    let data;
     try {
-      const text = await response.text();
       data = text ? JSON.parse(text) : null;
-    } catch (e) {
-      console.warn("Antwort konnte nicht als JSON gelesen werden:", e);
+    } catch {
+      data = { raw: text || "(leere Antwort von ZeptoMail)" };
     }
 
     if (!response.ok) {
-      console.error("ZeptoMail Fehler:", data || response.statusText);
+      console.error("❌ ZeptoMail Fehler:", data);
       return NextResponse.json(
-        {
-          error: "Mailversand fehlgeschlagen",
-          details: data || response.statusText,
-        },
+        { error: "Mailversand fehlgeschlagen", details: data },
         { status: 500 }
       );
     }
 
-    // Erfolgreicher Mailversand
+    console.log("✅ ZeptoMail erfolgreich:", data);
+
     return NextResponse.json({
       success: true,
-      message: "E-Mail erfolgreich gesendet",
+      message: "E-Mail erfolgreich gesendet!",
     });
   } catch (err) {
-    console.error("Serverfehler:", err);
+    console.error("💥 Serverfehler:", err);
     return NextResponse.json(
       {
         error: "Serverfehler beim Senden der Nachricht",
@@ -83,4 +88,3 @@ export async function POST(req) {
     );
   }
 }
-
