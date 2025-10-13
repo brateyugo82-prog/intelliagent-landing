@@ -21,9 +21,8 @@ export default function ContactForm() {
     paket: "starter",
   });
 
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState({ state: "idle", message: "" });
 
-  // 🧩 Wenn "?paket=..." in der URL steht → automatisch vorauswählen
   useEffect(() => {
     if (paketParam && PAKETE.some((p) => p.id === paketParam)) {
       setForm((prev) => ({ ...prev, paket: paketParam }));
@@ -32,7 +31,7 @@ export default function ContactForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setStatus("📨 Wird gesendet...");
+    setStatus({ state: "loading", message: "📨 Wird gesendet..." });
 
     try {
       const res = await fetch("/api/contact", {
@@ -40,17 +39,30 @@ export default function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      const data = await res.json();
 
-      if (data.success) {
-        setStatus("✅ Nachricht erfolgreich gesendet!");
+      const text = await res.text();
+      console.log("📬 Response:", text);
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        data = {};
+      }
+
+      if (res.ok && data.success) {
+        setStatus({ state: "success", message: "✅ Nachricht erfolgreich gesendet!" });
         setForm({ name: "", email: "", message: "", paket: "starter" });
       } else {
-        setStatus("❌ Fehler beim Senden: " + (data.error || "unbekannt"));
+        console.error("❌ Fehler:", data);
+        setStatus({
+          state: "error",
+          message: "❌ Senden fehlgeschlagen. Bitte erneut versuchen.",
+        });
       }
     } catch (err) {
-      console.error(err);
-      setStatus("❌ Netzwerkfehler.");
+      console.error("❌ Netzwerkfehler:", err);
+      setStatus({ state: "error", message: "❌ Netzwerkfehler beim Senden." });
     }
   }
 
@@ -67,17 +79,10 @@ export default function ContactForm() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {PAKETE.map((p) => {
             const isActive = form.paket === p.id;
-            const color =
-              p.color === "blue"
-                ? "blue"
-                : p.color === "purple"
-                ? "purple"
-                : "yellow";
-
             const activeClasses =
-              color === "blue"
+              p.color === "blue"
                 ? "bg-blue-600 border-blue-700 text-white"
-                : color === "purple"
+                : p.color === "purple"
                 ? "bg-purple-600 border-purple-700 text-white"
                 : "bg-yellow-500 border-yellow-600 text-black";
 
@@ -97,7 +102,7 @@ export default function ContactForm() {
                 <div
                   className={`text-xs mt-1 ${
                     isActive
-                      ? color === "yellow"
+                      ? p.color === "yellow"
                         ? "text-black/80"
                         : "text-white/80"
                       : "text-gray-600"
@@ -144,19 +149,28 @@ export default function ContactForm() {
       {/* Senden */}
       <button
         type="submit"
-        className="bg-blue-600 text-white px-6 py-3 rounded font-semibold hover:bg-blue-700 transition w-full"
+        disabled={status.state === "loading"}
+        className={`px-6 py-3 rounded font-semibold w-full transition ${
+          status.state === "loading"
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-600 hover:bg-blue-700 text-white"
+        }`}
       >
-        Nachricht senden 🚀
+        {status.state === "loading" ? "Wird gesendet..." : "Nachricht senden 🚀"}
       </button>
 
-      {/* Statusanzeige */}
-      {status && (
+      {/* Status */}
+      {status.message && (
         <p
-          className={`text-sm mt-2 ${
-            status.startsWith("✅") ? "text-green-600" : "text-red-600"
+          className={`text-sm mt-2 text-center ${
+            status.state === "success"
+              ? "text-green-600"
+              : status.state === "error"
+              ? "text-red-600"
+              : "text-gray-600"
           }`}
         >
-          {status}
+          {status.message}
         </p>
       )}
     </form>
