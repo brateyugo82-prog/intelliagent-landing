@@ -8,61 +8,62 @@ export async function POST(req) {
       return NextResponse.json({ error: "Fehlende Felder" }, { status: 400 });
     }
 
-    const hasZepto = !!process.env.ZEPTO_API_KEY;
     const apiKey = process.env.ZEPTO_API_KEY?.trim();
-    const fromEmail =
-      process.env.FROM_EMAIL || "no-reply@intelliagentsolutions.de";
-    const toEmail =
-      process.env.CONTACT_RECEIVER || "mark@intelliagentsolutions.de";
+    const hasZepto = !!apiKey;
+    const fromEmail = process.env.FROM_EMAIL || "no-reply@intelliagentsolutions.de";
+    const toEmail = process.env.CONTACT_RECEIVER || "mark@intelliagentsolutions.de";
 
     console.log("🔍 ENV CHECK:", {
-      hasZepto,
+      endpoint: "https://api.zeptomail.eu/v1.1/email",
       fromEmail,
       toEmail,
+      apiKeyLoaded: !!apiKey,
       apiKeySnippet: apiKey ? apiKey.slice(0, 20) + "..." : "undefined",
     });
 
-    // ========== ZEPTO MAIL (wenn vorhanden) ==========
+    // ========== ZEPTO MAIL (HTTP API) ==========
     if (hasZepto) {
-      const prefixedKey = apiKey.startsWith("Zoho-enczapikey")
-        ? apiKey
-        : `Zoho-enczapikey ${apiKey}`;
+      const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: apiKey.startsWith("Zoho-enczapikey")
+          ? apiKey
+          : `Zoho-enczapikey ${apiKey}`,
+      };
 
-      const payload = {
-        mailagent_id: "1dd0d9a430e96e97",
+      const body = {
         from: { address: fromEmail, name: "IntelliAgent Solutions" },
         to: [{ email_address: { address: toEmail } }],
         subject: `Neue Nachricht von ${name}`,
         htmlbody: `
           <div style="font-family:Arial,sans-serif;line-height:1.6;">
             <h2>Neue Anfrage über IntelliAgent Solutions</h2>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>E-Mail:</strong> ${email}</p>
-            <p><strong>Nachricht:</strong><br>${message}</p>
+            <p><b>Name:</b> ${name}</p>
+            <p><b>E-Mail:</b> ${email}</p>
+            <p><b>Nachricht:</b><br>${message}</p>
           </div>
         `,
       };
 
       const response = await fetch("https://api.zeptomail.eu/v1.1/email", {
         method: "POST",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-          "Authorization": prefixedKey,
-        },
-        body: JSON.stringify(payload),
+        headers,
+        body: JSON.stringify(body),
       });
 
       const raw = await response.text();
-      console.log("📬 ZeptoMail:", response.status, raw);
+      console.log("📬 ZeptoMail Antwort:", response.status, raw);
 
+      // Erfolgreicher Versand über ZeptoMail
       if (response.ok) {
         return NextResponse.json({
           success: true,
-          message: "E-Mail erfolgreich über ZeptoMail gesendet",
+          message: "✅ E-Mail erfolgreich über ZeptoMail gesendet",
         });
       }
-      console.warn("⚠️ ZeptoMail fehlgeschlagen:", raw);
+
+      // Fehlgeschlagen → fallback
+      console.warn("⚠️ ZeptoMail fehlgeschlagen, nutze SMTP:", raw);
     }
 
     // ========== SMTP FALLBACK ==========
@@ -79,20 +80,23 @@ export async function POST(req) {
     });
 
     await transporter.sendMail({
-      from: `"IntelliAgent Solutions" <${process.env.SMTP_USER}>`,
+      from: `"IntelliAgent Solutions" <${fromEmail}>`,
       to: toEmail,
       subject: `Neue Nachricht von ${name}`,
       html: `
-        <p><b>Name:</b> ${name}</p>
-        <p><b>E-Mail:</b> ${email}</p>
-        <p><b>Nachricht:</b><br>${message}</p>
+        <div style="font-family:Arial,sans-serif;line-height:1.6;">
+          <h2>Neue Anfrage über IntelliAgent Solutions</h2>
+          <p><b>Name:</b> ${name}</p>
+          <p><b>E-Mail:</b> ${email}</p>
+          <p><b>Nachricht:</b><br>${message}</p>
+        </div>
       `,
     });
 
     console.log("✅ SMTP erfolgreich.");
     return NextResponse.json({
       success: true,
-      message: "E-Mail über SMTP gesendet",
+      message: "✅ E-Mail erfolgreich über SMTP gesendet",
     });
   } catch (err) {
     console.error("❌ Serverfehler:", err);
