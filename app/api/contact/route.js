@@ -26,7 +26,7 @@ export async function POST(req) {
       },
       body: JSON.stringify({
         from: {
-          address: "mail_agent_1@intelliagentsolutions.de",
+          address: process.env.FROM_EMAIL || "no-reply@intelliagentsolutions.de",
           name: "IntelliAgent Solutions",
         },
         to: [
